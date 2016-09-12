@@ -37,6 +37,17 @@ public class MainActivity extends AppCompatActivity {
         startBtn = (Button) findViewById(R.id.button1);
         stopBtn = (Button) findViewById(R.id.button2);
 
+        _alarm.setOnReceiveListener(new MyAlarm.onReceiveListener() {
+            public void doAction () {
+                Log.d (TAG, "MyAlarm.onReceiveListener().doAction");
+            }
+            /* FOR MY EXPERIENCE ONLY or FUTURE USE IF NEEDED (S.ENG)
+            public void doAction (int arg) {
+                Log.d (TAG, "MyAlarm.onReceiveListener().doAction: arg="+arg);
+            }
+            */
+        });
+
         startBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 

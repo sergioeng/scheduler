@@ -21,13 +21,19 @@ public class MyAlarm extends BroadcastReceiver {
     static private Intent   _intent;
     static private long     _endTimeMS;
 
+    public interface onReceiveListener {
+        void doAction ();
+//        void doAction (int count);
+    }
+
+    static private onReceiveListener callback = null;
 
     @Override
         public void onReceive(Context context, Intent intent)
         {
             ++_counter ;
 
-            Log.d (TAG, "onReceive(): Alarm ["+ _counter +"]" + " currentTime="+String.valueOf(System.currentTimeMillis()/1000)+" endTime="+String.valueOf(_endTimeMS/1000));
+//            Log.d (TAG, "onReceive(): Alarm ["+ _counter +"]" + " currentTime="+String.valueOf(System.currentTimeMillis()/1000)+" endTime="+String.valueOf(_endTimeMS/1000));
 
             /*
             =====================================================================================
@@ -37,6 +43,13 @@ public class MyAlarm extends BroadcastReceiver {
             And I will call teh callback here.
             =====================================================================================
              */
+            if (this.callback  != null) {
+                callback.doAction();
+//                callback.doAction(_counter);
+            }
+            else {
+                Log.d (TAG, "onReceive(): Alarm ["+ _counter +"]" + " currentTime="+String.valueOf(System.currentTimeMillis()/1000)+" endTime="+String.valueOf(_endTimeMS/1000));
+            }
 
             if (System.currentTimeMillis() >= _endTimeMS) {
                 Log.d (TAG, "onReceive(): stoping alarm");
@@ -44,6 +57,11 @@ public class MyAlarm extends BroadcastReceiver {
                 _counter = 0;
             }
         }
+
+    public void setOnReceiveListener (onReceiveListener callback) {
+        this.callback = callback;
+    }
+
 
     public void setAlarm(Context context, long bgnTimeMS, long endTimeMS)
     {
